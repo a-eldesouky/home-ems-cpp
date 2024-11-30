@@ -1,0 +1,32 @@
+# Google C++ Style Guide layout. The code base targets C++17.
+Language: Cpp
+BasedOnStyle: Google
+Standard: c++17
+ColumnLimit: 80
+
+# GSG: "char* c", never "char *c"; don't infer the style from the file.
+DerivePointerAlignment: false
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+
+# GSG and CG: braces around every controlled statement.
+InsertBraces: true
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+# Includes: related header, C headers, C++ headers, other libraries, then
+# this project's headers, each in its own block.
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<ext/.*\.h>'
+    Priority: 2
+  - Regex: '^<gtest/'
+    Priority: 3
+  - Regex: '^<.*\.h>'
+    Priority: 1
+  - Regex: '^<.*'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 4
+

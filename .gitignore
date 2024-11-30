@@ -1,0 +1,9 @@
+/build/
+/out/
+/compile_commands.json
+/.cache/
+*.gcda
+*.gcno
+*.gcov
+coverage/
+__pycache__/

@@ -1,0 +1,81 @@
+# C++ Core Guidelines and bug-finding checks, plus Google style checks and
+# Google naming. Needs clang-tidy 17 or newer.
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-pro-bounds-constant-array-index,
+  google-*,
+  modernize-make-shared,
+  modernize-make-unique,
+  modernize-use-nullptr,
+  modernize-use-override,
+  modernize-use-using,
+  modernize-use-equals-default,
+  modernize-use-equals-delete,
+  modernize-avoid-c-arrays,
+  modernize-loop-convert,
+  modernize-pass-by-value,
+  modernize-use-emplace,
+  performance-*,
+  readability-braces-around-statements,
+  readability-container-size-empty,
+  readability-identifier-naming,
+  readability-make-member-function-const,
+  readability-namespace-comments,
+  readability-redundant-smartptr-get,
+  misc-const-correctness,
+  misc-unused-using-decls
+
+# Left out on purpose:
+# - bugprone-easily-swappable-parameters: constructors such as
+#   House(Power, Voltage, Frequency) take distinct strong types already.
+# - cppcoreguidelines-avoid-magic-numbers: noisy; constants are reviewed by
+#   hand and named where they carry meaning.
+# - cppcoreguidelines-pro-bounds-constant-array-index: assumes the GSL.
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*/(include/home_ems|src|apps|tests)/.*'
+FormatStyle: file
+
+CheckOptions:
+  # Core Guidelines.
+  - { key: cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true }
+  - { key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor, value: true }
+  # Google naming.
+  - { key: readability-identifier-naming.NamespaceCase,             value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,                 value: CamelCase }
+  - { key: readability-identifier-naming.StructCase,                value: CamelCase }
+  - { key: readability-identifier-naming.UnionCase,                 value: CamelCase }
+  - { key: readability-identifier-naming.EnumCase,                  value: CamelCase }
+  - { key: readability-identifier-naming.TypeAliasCase,             value: CamelCase }
+  - { key: readability-identifier-naming.TypedefCase,               value: CamelCase }
+  - { key: readability-identifier-naming.TypeTemplateParameterCase, value: CamelCase }
+  - { key: readability-identifier-naming.FunctionCase,              value: CamelCase }
+  - { key: readability-identifier-naming.FunctionIgnoredRegexp,     value: '^main$' }
+  - { key: readability-identifier-naming.MethodCase,                value: CamelCase }
+  # Accessors may be snake_case: power(), max_power().
+  - { key: readability-identifier-naming.MethodIgnoredRegexp,       value: '^[a-z][a-z0-9_]*$' }
+  - { key: readability-identifier-naming.VariableCase,              value: lower_case }
+  - { key: readability-identifier-naming.ParameterCase,             value: lower_case }
+  - { key: readability-identifier-naming.LocalConstantCase,         value: aNy_CasE }
+  - { key: readability-identifier-naming.PublicMemberCase,          value: lower_case }
+  - { key: readability-identifier-naming.PrivateMemberCase,         value: lower_case }
+  - { key: readability-identifier-naming.PrivateMemberSuffix,       value: '_' }
+  - { key: readability-identifier-naming.ProtectedMemberCase,       value: lower_case }
+  - { key: readability-identifier-naming.ProtectedMemberSuffix,     value: '_' }
+  - { key: readability-identifier-naming.ConstexprVariableCase,     value: CamelCase }
+  - { key: readability-identifier-naming.ConstexprVariablePrefix,   value: k }
+  - { key: readability-identifier-naming.GlobalConstantCase,        value: CamelCase }
+  - { key: readability-identifier-naming.GlobalConstantPrefix,      value: k }
+  - { key: readability-identifier-naming.StaticConstantCase,        value: CamelCase }
+  - { key: readability-identifier-naming.StaticConstantPrefix,      value: k }
+  - { key: readability-identifier-naming.ClassConstantCase,         value: CamelCase }
+  - { key: readability-identifier-naming.ClassConstantPrefix,       value: k }
+  - { key: readability-identifier-naming.EnumConstantCase,          value: CamelCase }
+  - { key: readability-identifier-naming.EnumConstantPrefix,        value: k }
+  - { key: readability-identifier-naming.MacroDefinitionCase,       value: UPPER_CASE }
+  # Header guards (PATH_FILE_H_) end in an underscore, which UPPER_CASE rejects.
+  - { key: readability-identifier-naming.MacroDefinitionIgnoredRegexp, value: '^[A-Z][A-Z0-9_]*_H_$' }
